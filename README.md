@@ -85,6 +85,7 @@ flowchart TB
 - [Operação](docs/operation.md): memória, hooks, projetos novos e retomada.
 - [Melhoria](docs/improvement.md): como experiências viram procedimentos melhores.
 - [Estado e evidências](docs/validation.md): o que foi e não foi verificado.
+- [Uso em várias máquinas](docs/multi-machine.md): adaptações e validação de VPS/Windows.
 - [Fontes](docs/sources.md): referências e distinção entre upstream e escolhas locais.
 - [Núcleo versionado](harness/): regras e sete skills centrais, incluindo o runner.
 

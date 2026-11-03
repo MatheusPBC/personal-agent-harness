@@ -42,7 +42,11 @@ def run(args):
             try:code=p.wait(timeout=args.timeout)
             except subprocess.TimeoutExpired:
                 import signal
-                os.killpg(p.pid,signal.SIGKILL);p.wait();code=124;timeout=True
+                if os.name == 'nt':
+                    subprocess.run(['taskkill','/PID',str(p.pid),'/T','/F'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+                    if p.poll() is None:p.kill()
+                else:os.killpg(p.pid,signal.SIGKILL)
+                p.wait();code=124;timeout=True
         except OSError as e:stream.write(str(e).encode());code=127
     try:after=snapshot(inputs)
     except ValueError:after=None

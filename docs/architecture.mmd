@@ -1,0 +1,46 @@
+flowchart TB
+  U[Seu pedido] --> A[Codex ou Claude]
+  G[AGENTS.md compartilhado] --> A
+  P[Regras e docs do projeto] --> A
+  A --> ID[Identifica o projeto]
+  ID --> M{Tem marcador?}
+  M -->|Sim| CONF[Confere workspace e projeto]
+  M -->|Não| FIND[Consulta inventário do ai-memory]
+  FIND --> MATCH{Identidade resolvida?}
+  MATCH -->|Projeto conhecido| OLD[Reutiliza memória existente]
+  MATCH -->|Projeto novo| NEW[Define escopo estável sem colisão]
+  MATCH -->|Ambígua| ASK[Pergunta a associação necessária]
+  ASK --> FIND
+  OLD --> MARK[Cria e valida .ai-memory.toml]
+  NEW --> MARK
+  MARK --> CONF
+  CONF --> CTX[Consulta histórico relevante disponível]
+  CTX --> SK[Seleciona skill pertinente]
+  SK --> CORE[implement / debug / review-code / plan-work]
+  SK --> SPEC[Especializações sob demanda]
+  CORE --> EX[Investiga e executa]
+  SPEC --> EX
+  EX --> V[Verifica comportamento afetado]
+  V -. recibo quando útil .-> VW[verify-work / harness-check]
+  VW --> REC[Comando, log, revisão e hashes]
+  V --> OUT[Entrega com evidência e limites]
+  REC --> OUT
+  CONF --> READY[Projeto preparado para captura]
+  EX --> EVENTS[Eventos reais de sessão e ferramentas]
+  READY --> HOOK[Hooks capturam próximos eventos]
+  EVENTS --> HOOK
+  HOOK --> MEM[ai-memory na VPS]
+  MEM -. contexto via MCP .-> CTX
+  OUT -. melhoria solicitada e lição comprovada .-> IMP[improve-harness]
+  MEM -. evidências .-> IMP
+  IMP --> CHANGE[Melhora skill, playbook ou check]
+  CHANGE --> EVAL[Avaliação e rollback]
+  EVAL --> SK
+  classDef rules fill:#dbeafe,stroke:#2563eb,color:#172554
+  classDef memory fill:#dcfce7,stroke:#16a34a,color:#14532d
+  classDef verify fill:#fef3c7,stroke:#d97706,color:#78350f
+  classDef learn fill:#ede9fe,stroke:#7c3aed,color:#2e1065
+  class G,P,A,FIND,MARK rules
+  class MEM,READY,CONF memory
+  class V,VW,REC verify
+  class IMP,CHANGE,EVAL learn
